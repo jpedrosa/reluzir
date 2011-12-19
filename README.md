@@ -15,7 +15,7 @@ Example:
 
     main() {
       var sample = """
-    {'abrac\\'a': 'draba','Dart':'Rocks'}
+    {'abrac\\'a': 'dabra','Dart':'Rocks'}
     """;
       var k, dict = ParseDict.parse(sample);
       for (k in dict.getKeys()) {
