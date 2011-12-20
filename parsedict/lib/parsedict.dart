@@ -14,8 +14,8 @@ class ParseDict {
           j, i - j + 1)) : '',
         llen = line.length,
         lastChars = llen > 5 ? line.substring(llen - 5, llen) : line;
-      throw "Exception: Invalid input. Stopped at line# ${lineCount} and " +
-        "at char# ${llen}: => ${lastChars}";
+      throw "Exception: Invalid input. Stopped at line# ${lineCount}, " +
+        "column# ${llen}: => ${lastChars}";
     }
     while (true) {
       if (c === null) {
