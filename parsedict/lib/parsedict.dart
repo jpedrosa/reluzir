@@ -6,7 +6,7 @@ class ParseDict {
 
   static parse(s) {
     var dict = {}, i = -1, mirror = s.charCodes(), len = mirror.length, c, k,
-      lookingFor = 0, tokenType = 50, token, lineCount = 1, lineMark = 0;
+      lookingFor = 0, tokenType = 50, token, lineCount = 1, lineMark = -1;
     invalidInput() {
       var j = lineMark + 1,
         line = j <= i ?
@@ -23,7 +23,7 @@ class ParseDict {
         if (i < len) {
           c = mirror[i];
         } else if (tokenType == 100) {
-          break;
+          break; // done parsing.
         } else {
           invalidInput();
         }
@@ -74,12 +74,17 @@ class ParseDict {
         } 
         break;
       case 51:
-        if (c == 39) { // '
+        switch (c) {
+        case 39: // '
           tokenType = 52;
           lookingFor = 1;
           c = null;
           token = [];
-        } else {
+          break;
+        case 125: // }
+          lookingFor = 56;
+          break;
+        default:
           invalidInput();
         } 
         break;
