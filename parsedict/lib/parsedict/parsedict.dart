@@ -1,10 +1,11 @@
+part of parsedict;
 // Copyright (c) 2012 Joao Pedrosa
 
 
 class ParseDict {
 
   static parse(s) {
-    var dict = {}, i = -1, mirror = s.charCodes(), len = mirror.length, c, k,
+    var dict = {}, i = -1, mirror = s.codeUnits, len = mirror.length, c, k,
       lookingFor = 0, tokenType = 50, token, lineCount = 1, lineMark = -1;
     invalidInput() {
       var j = lineMark + 1,
@@ -17,7 +18,7 @@ class ParseDict {
         "column# ${llen}: => ${lastChars}";
     }
     while (true) {
-      if (c === null) {
+      if (c == null) {
         i += 1;
         if (i < len) {
           c = mirror[i];

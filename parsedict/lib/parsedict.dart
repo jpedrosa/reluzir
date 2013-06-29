@@ -1,3 +1,3 @@
-#library("parsedict");
-#source("parsedict/parsedict.dart");
+library parsedict;
+part "parsedict/parsedict.dart";
 
