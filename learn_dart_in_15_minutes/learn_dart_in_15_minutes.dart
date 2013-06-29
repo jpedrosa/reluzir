@@ -76,7 +76,7 @@ example6() {
   new Example6Class().sayIt();
 }
 
-// Class methods are variables are declared with "static" terms.
+// Class methods and variables are declared with "static" terms.
 class Example7Class {
   static var example7ClassVariable = "Example7 class variable"; 
   static sayItFromClass() {
@@ -188,7 +188,7 @@ example15() {
     try {
       throw "Some unexpected error.";
     } catch (e) {
-      print("Example15 null value causes an exception: '${e}'");
+      print("Example15 an exception: '${e}'");
       throw e; // Re-throw
     }
   } catch (e) {
