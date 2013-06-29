@@ -2,6 +2,8 @@ import "dart:collection";
 import "dart:math" as DM;
 
 // Welcome to Learn Dart in 15 minutes. http://www.dartlang.org/
+// This is an executable tutorial. You can run it with Dart or on
+// the Try Dart! site if you copy/paste it there. http://try.dartlang.org/
 
 // Function declaration and method declaration look the same. Function
 // declarations can be nested. The declaration takes the form of
