@@ -1,6 +1,5 @@
-library run_bench;
 import "../lib/parsedict.dart";
-source "sample.dart";
+import "sample.dart";
 
 
 main() {
