@@ -5,13 +5,25 @@ more?
 
 =======
 
+ParseLeadingIng is useful when parsing CSS values in the browser that may contain a leading int. E.g. "21px".
+
+```dart
+import "../lib/parseleadingint.dart";
+
+main() {
+  print(ParseLeadingInt.parse("34px"));
+  print(ParseLeadingInt.parse("-", orZero: true));
+}
+```
+
+=======
+
 ParseDict is a library for parsing Python Dict-like structures. The first
 version only covers String keys to String values.
 
 Example:
 
 ```dart
-
 import "../lib/parsedict.dart";
     
 main() {
