@@ -1,4 +1,3 @@
-
 Reluzir is an umbrella project for several Dart libraries.
 
 Motivation: Dart is a young language with a bright future. So why not use it
@@ -11,14 +10,14 @@ version only covers String keys to String values.
 
 Example:
 
-    #import("../lib/parsedict.dart");
-
+    import "../lib/parsedict.dart";
+    
     main() {
-      var sample = @"""
+      var sample = r"""
     {'abrac\'a': 'dabra','Dart':'Rocks'}
     """;
       var k, dict = ParseDict.parse(sample);
-      for (k in dict.getKeys()) {
+      for (k in dict.keys) {
         print("${k}:${dict[k]}");
       }
     }
