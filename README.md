@@ -10,17 +10,20 @@ version only covers String keys to String values.
 
 Example:
 
-    import "../lib/parsedict.dart";
+```dart
+
+import "../lib/parsedict.dart";
     
-    main() {
-      var sample = r"""
-    {'abrac\'a': 'dabra','Dart':'Rocks'}
-    """;
-      var k, dict = ParseDict.parse(sample);
-      for (k in dict.keys) {
-        print("${k}:${dict[k]}");
-      }
-    }
+main() {
+  var sample = r"""
+{'abrac\'a': 'dabra','Dart':'Rocks'}
+""";
+  var k, dict = ParseDict.parse(sample);
+  for (k in dict.keys) {
+    print("${k}:${dict[k]}");
+  }
+}
+```
 
 =======
 
