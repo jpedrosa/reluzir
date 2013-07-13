@@ -173,3 +173,5 @@ At the moment Dart's RegExp is said to have a bug that slows it down. Hopefully 
 =========
 
 Thanks.
+
+* Credit for Lorem Ipsum explanation goes to http://www.lipsum.com/
