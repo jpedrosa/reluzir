@@ -4,14 +4,15 @@ It's more of a language extension because the methods are important for developm
 
 ==============
 
-The inspect method was inspired by Ruby's own version of it. The main idea is that the String returned by it is more detailed. The String wraps content into their appropriate formats so they help to tell a more complete story about their content. Say, if the String has just spaces, but if it comes between delimiters, we can tell where the spaces are, otherwise we'd have to try to guess.
+The inspect method was inspired by Ruby's own version of it. The main idea is that the String returned by it is more detailed. The String wraps content into their appropriate formats so they help to tell a more complete story about their actual content. Say if the String has just spaces, but if it comes between delimiters, we can tell where the spaces are, otherwise we'd have to try to guess.
 
 ```dart
 String inspect(v)
 
 void printInspect(v)
 
-void p(v)```
+void p(v)
+```
 
 A simple test for them:
 
