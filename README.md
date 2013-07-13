@@ -24,7 +24,7 @@ main() {
 
 =======
 
-ParseLeadingIng is useful when parsing CSS values in the browser that may contain a leading int. E.g. "21px".
+ParseLeadingInt is useful when parsing CSS values in the browser that may contain a leading int. E.g. "21px".
 
 ```dart
 import "../lib/parseleadingint.dart";
