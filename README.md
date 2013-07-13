@@ -5,6 +5,25 @@ more?
 
 =======
 
+Lang is a small library that adds some core language extensions to Dart.
+
+```dart
+import "../lib/lang.dart";
+
+
+main() {
+  var s = "   ", a = ["   ", "bee", "   "]; // Only spaces
+  print("'s' using just the print command: ${s}");
+  print("'s' using inspect within the print command: ${inspect(s)}");
+  print("'a' using just the print command:");
+  print(a);
+  print("'a' using the p (printInspect) command:");
+  p(a);
+}
+```
+
+=======
+
 ParseLeadingIng is useful when parsing CSS values in the browser that may contain a leading int. E.g. "21px".
 
 ```dart
