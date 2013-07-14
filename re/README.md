@@ -166,10 +166,12 @@ So unlike in Ruby which has a second parameter on "match" for index positioning,
 
 A little story: At first I didn't want to add a RegExp wrapper just because I wanted the extra "match" method. To justify creating a wrapper, I thought other people would want to have JavaScript friendly methods "test" and "exec". Then when I added "matchAll" and "matchAt" that settled the deal.
 
-What cause me to work on this was that I've been trying to get a small part of CodeMirror that deals with syntax lexer converted to Dart so I could perhaps plug it into a text editor. CodeMirror has tons of syntax highlighers. But CodeMirror also uses tons of RegExp!
+What cause me to work on this was that I've been trying to get a small part of CodeMirror that deals with syntax lexer converted to Dart so I could perhaps plug it into a text editor. CodeMirror has tons of syntax highlighters. But CodeMirror also uses tons of RegExp!
 
 At the moment Dart's RegExp is said to have a bug that slows it down. Hopefully it will be fixed at some point.
 
 =========
 
 Thanks.
+
+* Credit for Lorem Ipsum explanation goes to http://www.lipsum.com/
