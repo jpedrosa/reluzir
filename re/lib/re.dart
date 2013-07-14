@@ -65,8 +65,8 @@ class DRRegExp extends Pattern {
   
   String toString() {
     return "DRRegExp(pattern: ${inspect(pattern)}, "
-       "caseSensitive: ${isCaseSensitive}, "
-       "multiLine: ${isMultiLine})";
+       "isCaseSensitive: ${isCaseSensitive}, "
+       "isMultiLine: ${isMultiLine})";
   }
   
 }
@@ -90,6 +90,15 @@ class DRRECache {
       _cache[patternString] = re;
     }
     return re;
+  }
+  
+  bool get isMultiLine => _multiLine;
+  
+  bool get isCaseSensitive => _caseSensitive;
+  
+  String toString() {
+    return "DRRECache(isMultiLine: ${_multiLine}, "
+      "isCaseSensitive: ${_caseSensitive})";
   }
   
 }

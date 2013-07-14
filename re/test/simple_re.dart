@@ -3,6 +3,7 @@ import "../../lang/lib/lang.dart";
 
 
 main() {
+  p(RE);
   p(RE[r"\s"]);
   p(RE[r"\s"].match("s s"));
   p(REi[r"a((b)(c))"].test("zABCz"));
