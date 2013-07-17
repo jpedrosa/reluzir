@@ -140,13 +140,7 @@ DRRECache get REim {
   return _oneREim;
 }
 
-DRRECache get REmi {
-  if (_oneREim == null) {
-    _oneREim = new DRRECache(multiLine: true, caseSensitive: false);
-  }
-  return _oneREim;
-} 
-
+DRRECache get REmi => REim;
 
 
 

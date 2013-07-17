@@ -22,6 +22,11 @@ zABCz
 zDEFz
 zGHIz
 """));
+  p(REim[r"^[a-z]([a-z])"].matchAll("""
+zABCz
+zDEFz
+zGHIz
+"""));
   p(REi[r"^[a-z]([a-z])"].matchAll("""
 zABCz
 zDEFz
