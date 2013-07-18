@@ -17,17 +17,17 @@ zABCz
 zDEFz
 zGHIz
 """));
-  p(REmi[r"^[a-z]([a-z])"].matchAll("""
+  p(REmi["^[a-z]([a-z])"].matchAll("""
 zABCz
 zDEFz
 zGHIz
 """));
-  p(REim[r"^[a-z]([a-z])"].matchAll("""
+  p(REim["^[a-z]([a-z])"].matchAll("""
 zABCz
 zDEFz
 zGHIz
 """));
-  p(REi[r"^[a-z]([a-z])"].matchAll("""
+  p(REi["^[a-z]([a-z])"].matchAll("""
 zABCz
 zDEFz
 zGHIz
