@@ -6,12 +6,12 @@ main() {
   p(RE);
   p(RE[r"\s"]);
   p(RE[r"\s"].match("s s"));
-  p(REi[r"a((b)(c))"].test("zABCz"));
-  p(REi[r"a((b)(c))"].match("zABCz"));
-  p(REi[r"a((b)(c))"].firstMatch("=-yt"));
-  p(RE[r".(.)"].matchAll("zABCz"));
-  p(RE[r".(.)"].exec("zABCz"));
-  p(RE[r".(.)"].matchAt("zABCz", 1));
+  p(REi["a((b)(c))"].test("zABCz"));
+  p(REi["a((b)(c))"].match("zABCz"));
+  p(REi["a((b)(c))"].firstMatch("=-yt"));
+  p(RE[".(.)"].matchAll("zABCz"));
+  p(RE[".(.)"].exec("zABCz"));
+  p(RE[".(.)"].matchAt("zABCz", 1));
   p(REm[r"^\w\w"].matchAll("""
 zABCz
 zDEFz
