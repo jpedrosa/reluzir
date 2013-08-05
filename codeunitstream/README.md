@@ -1,4 +1,7 @@
-CodeUnitStream is sort of like a StringStream of other languages. It helps to parse text after tokens. Such technology is often used by text processors such as text editors like CodeMirror.
+CodeUnitStream
+==============
+
+CodeUnitStream is sort of like a [StringStream of other languages](http://www.cplusplus.com/reference/sstream/stringstream/). It helps to parse text after tokens. Such technology is often used by text processors such as text editors like [CodeMirror](https://github.com/marijnh/CodeMirror/blob/master/mode/xml/index.html).
 
 In Dart strings are still being optimized and the RegExp currently seems to have a bug that slows it down. That's why I've focused on the character int values instead, as it could be faster.
 
@@ -34,7 +37,7 @@ main() {
 
 =========
 
-Or a more complicated example for matching phonenumbers in the (123)456-7890 format as seen in a Rebol example that motivated it:
+Or a more complicated example for matching phone numbers in the (123)456-7890 format as seen in a [Rebol example](http://rebol2.blogspot.com.br/2013/07/parse-aid.html) that motivated it:
 
 ```
 import "../../lang/lib/lang.dart";
@@ -134,7 +137,7 @@ main() {
 }
 ```
 
-I've also used CodeUnitStream to parse HTML which helped to develop it a little more. Check the Lexer Reluzir library soon for that.
+I've also used CodeUnitStream to parse HTML which helped to develop it a little more. Check the Reluzir Lexer library soon for that.
 
 =============
 
@@ -142,5 +145,5 @@ I expect to continue using CodeUnitStream for other kinds of parsers.
 
 It's pretty quick. To parse HTML of thousands of lines it takes anywhere from 2ms to over 50ms depending on whether I'm running it from Dart or Dart2JS and also depending on the browser. I haven't yet worked on more optimizations as I don't have more benchmarks yet.
 
-To help to keep the code faster I haven't reused much code by nesting functions too much. That way I've sort of "inlined" them myself. Sorry about that. :-)
+To help to keep the code faster I haven't reused much code by nesting functions too much. That way I've sort of "inlined" them myself. Then again, I've added a lot of methods by default, some which I may never use. :-)
 
