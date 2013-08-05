@@ -1,3 +1,5 @@
+ParseLeadingInt
+===============
 
 ParseLeadingInt is useful when dealing with slightly uncertain int values stored in CSS values of the browser. E.g. "10px".
 

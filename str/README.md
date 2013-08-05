@@ -1,3 +1,6 @@
+Str
+===
+
 Str is a library dedicated to generic String methods.
 
 Here's a sample:

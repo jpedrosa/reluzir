@@ -145,5 +145,5 @@ I expect to continue using CodeUnitStream for other kinds of parsers.
 
 It's pretty quick. To parse HTML of thousands of lines it takes anywhere from 2ms to over 50ms depending on whether I'm running it from Dart or Dart2JS and also depending on the browser. I haven't yet worked on more optimizations as I don't have more benchmarks yet.
 
-To help to keep the code faster I haven't reused much code by nesting functions too much. That way I've sort of "inlined" them myself. Then again, I've added a lot of methods by default, some which I may never use. :-)
+To help to keep the code faster I have avoided nesting functions too much. That way I've sort of "inlined" them myself. Then again, I've added a lot of methods by default, some of which I may never use. :-)
 

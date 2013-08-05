@@ -1,3 +1,6 @@
+RE
+==
+
 RE is a RegExp wrapper library for Dart. Its main purpose is to approximate the succinctness of literal RegExp of other languages.
 
 With a lot of RegExp in code it's hard to cache them all or to name them all. Using a library like this one helps to make RegExp more of a first-class construct in Dart.
