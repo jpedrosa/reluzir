@@ -137,7 +137,7 @@ main() {
 }
 ```
 
-I've also used CodeUnitStream to parse HTML which helped to develop it a little more. Check the Reluzir Lexer library soon for that.
+I've also used CodeUnitStream to parse HTML which helped to develop it a little more. Check the [Reluzir Lexer](https://github.com/jpedrosa/reluzir/tree/master/lexer) library soon for that.
 
 =============
 
