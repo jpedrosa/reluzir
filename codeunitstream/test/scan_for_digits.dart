@@ -19,7 +19,7 @@ scanForDigits(cus) {
 }
 
 main() {
-  var sample = genSample1();
+  var sample = genSample2();
   scanForDigits(new CodeUnitStream(text: sample));
 }
 

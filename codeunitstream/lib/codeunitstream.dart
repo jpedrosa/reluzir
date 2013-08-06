@@ -161,6 +161,27 @@ class CodeUnitStream {
     return false;
   }
   
+  eatUntil(fn(c)) {
+    return matchUntil(fn, true) >= 0;
+  }
+
+  matchUntil(fn(c), [consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex, s = _text;
+    while (i < len) {
+      if (fn(s.codeUnitAt(i)) >= 0) {
+        break;
+      }
+      i++;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
   seekContext(fn(c)) {
     return matchContext(fn, true) >= 0;
   }
@@ -1064,7 +1085,7 @@ class CodeUnitStream {
   
   toString() {
     return "CodeUnitStream(currentIndex: ${currentIndex}, "
-      "startIndex: ${startIndex}, text: ${_text}, "
+      "startIndex: ${startIndex}, text: ${inspect(_text)}, "
       "lineStartIndex: ${lineStartIndex}, lineEndIndex: ${lineEndIndex})";
   }
   

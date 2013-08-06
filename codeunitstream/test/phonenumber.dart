@@ -82,7 +82,7 @@ parsePhones(stream) {
 }
 
 main() {
-  var sample = genSample1();
+  var sample = genSample8();
   
   p("verbose");
   // keep milestone to try to optimize a little. too verbose
