@@ -246,13 +246,14 @@ class CodeUnitStream {
     return o;
   }
 
-  match(sequence, [consume = false]) {
-    var r = false, seqLen = sequence, i = currentIndex, lasti = i + seqLen;
+  match(string, [consume = false]) {
+    var r = false, seqLen = string.length, i = currentIndex,
+      lasti = i + seqLen;
     if (lasti < lineEndIndex) {
       var s = _text, si = 0;
       r = true;
       for (; i <= lasti; i++) {
-        if (s.codeUnitAt(i) != sequence[si]) {
+        if (s.codeUnitAt(i) != string.codeUnitAt(si)) {
           r = false;
           break;
         }
@@ -265,18 +266,18 @@ class CodeUnitStream {
     return r;
   }
   
-  eatOnEitherSequence(list1, list2) {
-    return matchOnEitherSequence(list1, list2, true) >= 0;
+  eatOnEitherString(string1, string2) {
+    return matchOnEitherString(string1, string2, true) >= 0;
   }
 
   // Used for case insensitive matching
-  matchOnEitherSequence(list1, list2, [consume = false]) {
-    var r = -1, seqLen = list1.length, i = currentIndex;
+  matchOnEitherString(string1, string2, [consume = false]) {
+    var r = -1, seqLen = string1.length, i = currentIndex;
     if (i + seqLen < lineEndIndex) {
       var s = _text, c, j;
       for (j = 0; j < seqLen; j++) {
         c = s.codeUnitAt(i + j);
-        if (c != list1[j] && c != list2[j]) {
+        if (c != string1.codeUnitAt(j) && c != string2.codeUnitAt(j)) {
           break;
         }
       }
@@ -290,18 +291,19 @@ class CodeUnitStream {
     return r;
   }
 
-  eatWhileNotSequence(list) {
-    return matchWhileNotSequence(list, true) >= 0;
+  eatWhileNotString(string) {
+    return matchWhileNotString(string, true) >= 0;
   }
   
-  matchWhileNotSequence(list, [consume = false]) {
-    var r = -1, i = currentIndex, savei = i, seqLen = list.length,
-      len = lineEndIndex - seqLen + 1, c, s = text, sfc = list[0], j;
+  matchWhileNotString(string, [consume = false]) {
+    var r = -1, i = currentIndex, savei = i, seqLen = string.length,
+      len = lineEndIndex - seqLen + 1, c, s = text, 
+      sfc = string.codeUnitAt(0), j;
     while (i < len) {
       c = s.codeUnitAt(i);
       if (c == sfc) {
         for (j = 1; j < seqLen; j++) {
-          if (s.codeUnitAt(i + j) != list[j]) {
+          if (s.codeUnitAt(i + j) != string.codeUnitAt(j)) {
             i += j - 1;
             break;
           }

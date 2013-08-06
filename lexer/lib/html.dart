@@ -47,9 +47,9 @@ class HtmlLexer extends LexerCommon {
     return r;
   }
   
-  static const CLOSE_COMMENT_SEQ = const [45, 45, 62];
-  static const DOCTYPE_SEQ_UPPER = const [68, 79, 67, 84, 89, 80, 69];
-  static const DOCTYPE_SEQ_LOWER = const [100, 111, 99, 116, 121, 112, 101];
+  static const CLOSE_COMMENT_STR = "-->";
+  static const DOCTYPE_STR_UPPER = "DOCTYPE";
+  static const DOCTYPE_STR_LOWER = "doctype";
   
   inQuotedAttrValue(stream, status) {
     var r;
@@ -75,7 +75,7 @@ class HtmlLexer extends LexerCommon {
       r = STRING;
       status.spaceTokenizer = null;
       status.tokenizer = inQuotedAttrValue;
-    } else if (stream.eatWhileNeitherFour(34, 60, 62, 32)) { // " < > space) {
+    } else if (stream.eatWhileNeitherFour(34, 60, 62, 32)) { // " < > space
       r = STRING;
       status.tokenizer = inTag;
     }
@@ -185,7 +185,7 @@ class HtmlLexer extends LexerCommon {
   
   inComment(stream, status) {
     var r;
-    if (stream.eatWhileNotSequence(CLOSE_COMMENT_SEQ)) { // -->
+    if (stream.eatWhileNotString(CLOSE_COMMENT_STR)) { // -->
       r = COMMENT;
     } else {
       r = inCloseComment(stream, status);
@@ -219,7 +219,7 @@ class HtmlLexer extends LexerCommon {
   
   eatOpenDoctype(o) {
     return o.eatLessThan() && o.eatExclamation() &&
-        o.eatOnEitherSequence(DOCTYPE_SEQ_UPPER, DOCTYPE_SEQ_LOWER);
+        o.eatOnEitherString(DOCTYPE_STR_UPPER, DOCTYPE_STR_LOWER);
   }
   
   inDoctype(stream, status) {
