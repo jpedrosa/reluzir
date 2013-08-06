@@ -162,13 +162,18 @@ class CodeUnitStream {
   }
   
   seekContext(fn(c)) {
-    var r = -1, i = currentIndex, len = lineEndIndex, s = _text, c;
+    return matchContext(fn, true) >= 0;
+  }
+
+  matchContext(fn(c), [consume = false]) {
+    var r = -1, i = currentIndex, len = lineEndIndex, s = _text;
     while (i < len) {
-      c = s.codeUnitAt(i);
-      if (fn(c) >= 0) {
-        r = c;
-        currentIndex = i;
-        startIndex = i;
+      if (fn(s.codeUnitAt(i)) >= 0) {
+        r = i;
+        if (consume) {
+          currentIndex = i;
+          startIndex = i;
+        }
         break;
       }
       i++;
@@ -401,6 +406,28 @@ class CodeUnitStream {
     while (i < len) {
       c = s.codeUnitAt(i);
       if (c == c1 || c == c2 || c == c3 || c == c4) {
+        break;
+      }
+      i++;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
+  eatWhileNeitherFive(c1, c2, c3, c4, c5) {
+    return matchWhileNeitherFive(c1, c2, c3, c4, c5, true) >= 0;
+  }
+  
+  matchWhileNeitherFive(c1, c2, c3, c4, c5, [consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex, c, s = text;
+    while (i < len) {
+      c = s.codeUnitAt(i);
+      if (c == c1 || c == c2 || c == c3 || c == c4 || c == c5) {
         break;
       }
       i++;

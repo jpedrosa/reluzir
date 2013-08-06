@@ -43,7 +43,6 @@ Or a more complicated example for matching phone numbers in the (123)456-7890 fo
 import "../../lang/lib/lang.dart";
 import "../lib/codeunitstream.dart";
 
-
 genSample1() => "(123)456-7890";
 genSample2() => "(123)456-7890\n554-0213";
 genSample3() => "123445";
@@ -74,12 +73,12 @@ leanerParsePhones(stream) {
   }
   while (!stream.isEol) {
     //p(stream);
-    if (stream.seekContext(openParenOrDigit) >= 0) {
+    if (stream.seekContext(openParenOrDigit)) {
       if (stream.eatOpenParen()) {
-        if (stream.maybeMatch(areaCode) >= 0) {
+        if (stream.maybeEat(areaCode)) {
           p(["namaste", stream.collectTokenString()]);
         }
-      } else if (stream.eatDigit() && stream.maybeMatch(localArea) >= 0) {
+      } else if (stream.eatDigit() && stream.maybeEat(localArea)) {
         p(["yat", stream.collectTokenString()]);
       }
     } else {
@@ -109,12 +108,12 @@ parsePhones(stream) {
   }
   while (!stream.isEol) {
     //p(stream);
-    if (stream.seekContext(openParenOrDigit) >= 0) {
+    if (stream.seekContext(openParenOrDigit)) {
       if (stream.eatOpenParen()) {
-        if (stream.maybeMatch(areaCode) >= 0) {
+        if (stream.maybeEat(areaCode)) {
           p(["namaste", stream.collectTokenString()]);
         }
-      } else if (stream.eatDigit() && stream.maybeMatch(localArea) >= 0) {
+      } else if (stream.eatDigit() && stream.maybeEat(localArea)) {
         p(["yat", stream.collectTokenString()]);
       }
     } else {
@@ -133,7 +132,6 @@ main() {
   p("leaner");
   // one version that's leaner which worries less about optimization
   leanerParsePhones(new CodeUnitStream(text: sample));
-}
 }
 ```
 

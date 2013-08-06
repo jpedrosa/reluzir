@@ -9,7 +9,7 @@ genSample3() => "despite";
 scanForDigits(cus) {
   while (!cus.isEol) {
     p(cus);
-    if (cus.seekContext((c) => (c >= 48 && c <= 57) ? c : -1) >= 0 &&
+    if (cus.seekContext((c) => (c >= 48 && c <= 57) ? c : -1) &&
         cus.eatWhileDigit()) {
       p(cus.collectTokenString());
     } else {

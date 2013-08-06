@@ -32,12 +32,12 @@ leanerParsePhones(stream) {
   }
   while (!stream.isEol) {
     //p(stream);
-    if (stream.seekContext(openParenOrDigit) >= 0) {
+    if (stream.seekContext(openParenOrDigit)) {
       if (stream.eatOpenParen()) {
-        if (stream.maybeMatch(areaCode) >= 0) {
+        if (stream.maybeEat(areaCode)) {
           p(["namaste", stream.collectTokenString()]);
         }
-      } else if (stream.eatDigit() && stream.maybeMatch(localArea) >= 0) {
+      } else if (stream.eatDigit() && stream.maybeEat(localArea)) {
         p(["yat", stream.collectTokenString()]);
       }
     } else {
@@ -67,12 +67,12 @@ parsePhones(stream) {
   }
   while (!stream.isEol) {
     //p(stream);
-    if (stream.seekContext(openParenOrDigit) >= 0) {
+    if (stream.seekContext(openParenOrDigit)) {
       if (stream.eatOpenParen()) {
-        if (stream.maybeMatch(areaCode) >= 0) {
+        if (stream.maybeEat(areaCode)) {
           p(["namaste", stream.collectTokenString()]);
         }
-      } else if (stream.eatDigit() && stream.maybeMatch(localArea) >= 0) {
+      } else if (stream.eatDigit() && stream.maybeEat(localArea)) {
         p(["yat", stream.collectTokenString()]);
       }
     } else {
