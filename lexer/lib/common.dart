@@ -21,7 +21,7 @@ class LexerCommon {
   
   var entryTokenizer, defaultTokenizer, spaceTokenizer;
 
-  doParseStream(stream, status, resultFn(tokenType)) {
+  parseLine(stream, status, resultFn(tokenType)) {
     var tt;
     while (!stream.isEol) {
       tt = null;
@@ -50,7 +50,7 @@ class LexerCommon {
     while (i >= 0) {
       if (i - si > 1) {
         stream.lineEndIndex = i;
-        doParseStream(stream, status, resultFn);
+        parseLine(stream, status, resultFn);
       }
       si = i + 1;
       stream.startIndex = si;
@@ -60,7 +60,7 @@ class LexerCommon {
     }
     if (len > si) {
       stream.lineEndIndex = len;
-      doParseStream(stream, status, resultFn);
+      parseLine(stream, status, resultFn);
     }
   }
   
