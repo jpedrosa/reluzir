@@ -31,6 +31,7 @@ class LexerCommon {
       if (tt == null) {
         tt = status.tokenizer(stream, status);
         if (tt == null) {
+          status.tokenizer = defaultTokenizer;
           tt = defaultTokenizer(stream, status);
         }
       }

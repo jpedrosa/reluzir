@@ -51,11 +51,29 @@ class HtmlLexer extends LexerCommon {
   static const DOCTYPE_STR_UPPER = "DOCTYPE";
   static const DOCTYPE_STR_LOWER = "doctype";
   
-  inQuotedAttrValue(stream, status) {
+  inDoubleQuotedAttrValue(stream, status) {
     var r;
     if (stream.eatWhileNeitherThree(34, 60, 62)) { // " and < and >
       r = STRING;
     } else if (stream.eatDoubleQuote()) {
+      r = STRING;
+      status.tokenizer = inTag;
+      status.spaceTokenizer = space;
+    } else if (stream.eatGreaterThan()) {
+      r = SYMBOL;
+      status.tokenizer = inText;
+      status.spaceTokenizer = space;
+    } else {
+      status.spaceTokenizer = space;
+    }
+    return r;
+  }
+  
+  inSingleQuotedAttrValue(stream, status) {
+    var r;
+    if (stream.eatWhileNeitherThree(39, 60, 62)) { // ' and < and >
+      r = STRING;
+    } else if (stream.eatSingleQuote()) {
       r = STRING;
       status.tokenizer = inTag;
       status.spaceTokenizer = space;
@@ -74,8 +92,13 @@ class HtmlLexer extends LexerCommon {
     if (stream.eatDoubleQuote()) {
       r = STRING;
       status.spaceTokenizer = null;
-      status.tokenizer = inQuotedAttrValue;
-    } else if (stream.eatWhileNeitherFour(34, 60, 62, 32)) { // " < > space
+      status.tokenizer = inDoubleQuotedAttrValue;
+    } else if (stream.eatSingleQuote()) {
+      r = STRING;
+      status.spaceTokenizer = null;
+      status.tokenizer = inSingleQuotedAttrValue;
+    } else if (stream.eatWhileNeitherFive(34, 39, 60, 62, 32)) {
+      // not one of these: " ' < > space
       r = STRING;
       status.tokenizer = inTag;
     }

@@ -31,6 +31,8 @@ genSample45() => '<!-- multiline\ncomment -->';
 
 genSample50() => '<!DOCTYPE html>';
 
+genSample60() => "<a href='http://'>etc</a>";
+
 genSample90() => """
 <a href=http://essa.com>
 etc
@@ -65,7 +67,7 @@ genSample201() => '<br />';
 
 
 main() {
-  var sample = genSample92(), lexer = new HtmlLexer(), tokens = [],
+  var sample = genSample60(), lexer = new HtmlLexer(), tokens = [],
     stream = new CodeUnitStream(text: sample);
   lexer.parseTokenStrings(stream, lexer.spawnStatus(), 
       (tt, ts) => tokens.add([tt, ts]));
