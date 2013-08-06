@@ -7,13 +7,10 @@ genStream(sample) {
 }
 
 main() {
-  // bc - 98, 99
-  p(genStream("abcdef").matchWhileNotSequence([98, 99]));
-  
-  // bcdef - 98, 99, 100, 101, 102
-  p(genStream("abcdef").matchWhileNotSequence([98, 99, 100, 101, 102]));
-  p(genStream("bcabcdef").matchWhileNotSequence([98, 99, 100, 101, 102]));
-  p(genStream("bcdeabcdef").matchWhileNotSequence([98, 99, 100, 101, 102]));
+  p(genStream("abcdef").matchWhileNotString("bc"));
+  p(genStream("abcdef").matchWhileNotString("bcdef"));
+  p(genStream("bcabcdef").matchWhileNotString("bcdef"));
+  p(genStream("bcdeabcdef").matchWhileNotString("bcdef"));
 }
 
 
