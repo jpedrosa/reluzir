@@ -62,7 +62,7 @@ To convert the numeric token type to a readable string, pass the token type to t
 
 I expect to include these Lexer methods in a text editor. So far I've only included them in a web sample:
 
-![Html Lexer sample](http://postimg.org/image/fk0ww2lbn/")
+[http://postimg.org/image/fk0ww2lbn/](http://postimg.org/image/fk0ww2lbn/)
 
 ======
 
