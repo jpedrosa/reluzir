@@ -63,7 +63,7 @@ class LexerCommon {
     var s = stream.text, i = Str.indexOfNewLine(s),
       len = s.length, si = 0;
     while (i >= 0) {
-      if (i - si > 1) {
+      if (i - si > 0) {
         stream.lineEndIndex = i;
         parseLine(stream, status, resultFn);
       }

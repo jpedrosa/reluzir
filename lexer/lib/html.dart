@@ -266,6 +266,7 @@ class HtmlLexer extends LexerCommon {
       status.tokenizer = inDoctype;
       status.spaceTokenizer = null;
     } else {
+      status.tokenizer = inText;
       r = inText(stream, status);
     }
     return r;
