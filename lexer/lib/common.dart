@@ -7,11 +7,26 @@ import "../../lang/lib/lang.dart";
 
 class LexerStatus {
   
-  var lexer, tokenizer, spaceTokenizer;
+  var tokenizer, spaceTokenizer;
   
-  LexerStatus({this.lexer}) {
-    tokenizer = lexer.entryTokenizer;
-    spaceTokenizer = lexer.spaceTokenizer;
+  LexerStatus({entryTokenizer, spaceTokenizer}) {
+    tokenizer = entryTokenizer;
+    this.spaceTokenizer = spaceTokenizer;
+  }
+  
+  clone() {
+    return new LexerStatus(entryTokenizer: tokenizer,
+        spaceTokenizer: spaceTokenizer);
+  }
+  
+  operator == (other) {
+    return tokenizer.toString() == other.tokenizer.toString() &&
+        spaceTokenizer.toString() == other.spaceTokenizer.toString();
+  }
+  
+  toString() {
+    return "LexerStatus(tokenizer: ${tokenizer}, "
+        "spaceTokenizer: ${spaceTokenizer})";
   }
   
 }
@@ -65,7 +80,8 @@ class LexerCommon {
   }
   
   spawnStatus() {
-    return new LexerStatus(lexer: this);
+    return new LexerStatus(entryTokenizer: this.entryTokenizer,
+        spaceTokenizer: this.spaceTokenizer);
   }
   
 }

@@ -150,10 +150,11 @@ class HtmlLexer extends LexerCommon {
     return r;
   }
   
+  eatTagName(o) => eatAttrName(o);
+  
   inCloseTagName(stream, status) {
     var r;
-    if (stream.eatAlpha()) {
-      stream.eatWhileAlphaDigit();
+    if (eatTagName(stream)) {
       r = KEYWORD; // tagName
     } else if (stream.eatGreaterThan()) {
       r = SYMBOL;
@@ -184,8 +185,7 @@ class HtmlLexer extends LexerCommon {
   
   inTagName(stream, status) {
     var r;
-    if (stream.eatAlpha()) {
-      stream.eatWhileAlphaDigit();
+    if (eatTagName(stream)) {
       r = KEYWORD; // tagName
       status.tokenizer = postTagName;
     } else if (stream.eatSlash()) {
