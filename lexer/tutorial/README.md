@@ -133,14 +133,16 @@ Check the [remainder of the hilite.dart code.](https://github.com/jpedrosa/reluz
 For more on Dart, be sure to check its thorough website: http://www.dartlang.org/
 The Dart site includes API references, Editor download and much more.
 
+An alternative is the [Learn Dart in 15 minutes tutorial.](https://github.com/jpedrosa/reluzir/blob/master/learn_dart_in_15_minutes/learn_dart_in_15_minutes.dart))
+
 You can see a screenshot of the Hilite application:
 
 ![hilite.png](hilite.png)
 
-And you can run it instead by clicking here:
+And you can run it instead by clicking here: http://jpedrosa.github.io/reluzir/hilite_tutorial/index.html
 
 
-I think Dart is due a bright future. Some web application programming with Canvas, WebGL and so on is still being discovered. But when coupled with the unique features of Dart like in ease of deployment, it could make a lot of sense. Meanwhile, JavaScript is also here to stay. Maybe the two of them could be coupled both on the client and on the server. Two is always better than one, right? :-)
+I think Dart is due a bright future. Some web application programming with Canvas, WebGL and so on is still being discovered. But when coupled with the unique features of Dart like its ease of deployment, it could make a lot of sense. Meanwhile, JavaScript is also here to stay. Maybe the two of them could be coupled both on the client and on the server. Two is always better than one, right? :-)
 
 Thanks for reading.
 
