@@ -82,7 +82,7 @@ Dart is much more succinct than most languages when we aren't declaring too many
 
 Such as, in JavaScript we read a lot of "function" for function declarations. Maybe a lot of "prototype" too. And a lot of "typeof". Even a lot of comparisons with the triad "===". And a lot of "this", "bind" and maybe "that."
 
-In Dart, a lot of that is not needed. Functions are declared without the needed "function" of JavaScript. Just "(argument1, argument2) { }" will do. When nesting functions that makes JavaScript appear more verbose, whereas Dart is just OK.
+In Dart, a lot of that is not needed. Functions are declared without the needed "function" of JavaScript. Just "(argument1, argument2) { }" will do. Nesting functions makes JavaScript appear more verbose, whereas Dart is just OK.
 
 In Dart, class and methods don't need explicit "prototype" manufacturing. Just "class Sweet { sugar() {} }" and in Dart you have a class named Sweet with a method named sugar.
 
