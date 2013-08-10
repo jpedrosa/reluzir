@@ -135,6 +135,8 @@ class Hilite {
 }
 
 
+// The main() method is the entry point to the application.
+// It all starts executing from here.
 main() {
   DH.query('#status').innerHtml = "Hello Hilite!";
   var o = new Hilite(htmlSample: genHtmlSample(),

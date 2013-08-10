@@ -1228,7 +1228,7 @@ class CodeUnitStream {
     var r = -1, i = currentIndex, s = _text;
     if (qc == s.codeUnitAt(i)) {
       var savei = i, len = lineEndIndex, escapeCount = 0, c;
-      for (++i; i < len; i++) {
+      for (i++; i < len; i++) {
         c = s.codeUnitAt(i);
         if (c == 92) { // \
           escapeCount++;
