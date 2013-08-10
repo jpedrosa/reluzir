@@ -42,7 +42,7 @@ That Doctype is the simplified one of HTML5.
 hilite.dart
 -----------
 
-This file is the actual Dart file. It could also be a packaged file if we had used one of the Dart compilers to package it up. Creating a deployment package with Dart is very cool. It brings all the dependencies into a single file, while also removing a lot of the code that the program doesn't use, but just exists in the libraries that the program has access to.
+This file is the actual Dart file. It could also be a packaged file if we had used one of the Dart compilers to package it up. Creating a deployment package with Dart is very cool. It brings all the dependencies into a single file, while also removing a lot of the code that the program doesn't use that just takes space in the libraries being imported.
 
 With all of the dependencies being put into a single file, loading the Dart application is faster!
 
