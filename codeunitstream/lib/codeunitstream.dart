@@ -95,7 +95,7 @@ class CodeUnitStream {
   }
 
   eatWhileSpace() {
-    return matchSpaces(true) >= 0;
+    return matchWhileSpace(true) >= 0;
   }
   
   matchSpace([consume = false]) {
@@ -112,11 +112,51 @@ class CodeUnitStream {
     return r;
   }
 
-  matchSpaces([consume = false]) {
+  matchWhileSpace([consume = false]) {
     var r = -1, i = currentIndex, savei = i, len = lineEndIndex, c, s = _text;
     while (i < len) {
       c = s.codeUnitAt(i);
       if (c != 32 && c != 160) {
+        break;
+      }
+      i++;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
+  eatSpaceTab() {
+    return matchSpaceTab(true) >= 0;
+  }
+
+  eatWhileSpaceTab() {
+    return matchWhileSpaceTab(true) >= 0;
+  }
+  
+  matchSpaceTab([consume = false]) {
+    var r = -1, i = currentIndex;
+    if (i < lineEndIndex) {
+      var c = _text.codeUnitAt(i);
+      if (c == 32 || c == 160 || c == 9) { // space or \u00a0 or tab
+        r = c;
+        if (consume) {
+          currentIndex = i + 1;
+        }
+      }
+    }
+    return r;
+  }
+
+  matchWhileSpaceTab([consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex, c, s = _text;
+    while (i < len) {
+      c = s.codeUnitAt(i);
+      if (c != 32 && c != 160 && c != 9) { // space or \u00a0 or tab
         break;
       }
       i++;
@@ -271,22 +311,26 @@ class CodeUnitStream {
     o.currentIndex = currentIndex;
     return o;
   }
+  
+  eatString(string) {
+    return matchString(string, true) >= 0;
+  }
 
-  match(string, [consume = false]) {
-    var r = false, seqLen = string.length, i = currentIndex,
-      lasti = i + seqLen;
-    if (lasti < lineEndIndex) {
-      var s = _text, si = 0;
-      r = true;
-      for (; i <= lasti; i++) {
-        if (s.codeUnitAt(i) != string.codeUnitAt(si)) {
-          r = false;
+  matchString(string, [consume = false]) {
+    var r = -1, len = string.length, i = currentIndex, s = _text,
+      sfc = string.codeUnitAt(0);
+    if (i + len - 1 < lineEndIndex && s.codeUnitAt(i) == sfc) {
+      var j = 1;
+      for (; j < len; j++) {
+        if (s.codeUnitAt(i + j) != string.codeUnitAt(j)) {
           break;
         }
-        si++;
       }
-      if (r && consume) {
-        currentIndex += seqLen;
+      if (j >= len) {
+        r = sfc;
+        if (consume) {
+          currentIndex += len;
+        }
       }
     }
     return r;
@@ -299,7 +343,7 @@ class CodeUnitStream {
   // Used for case insensitive matching
   matchOnEitherString(string1, string2, [consume = false]) {
     var r = -1, seqLen = string1.length, i = currentIndex;
-    if (i + seqLen < lineEndIndex) {
+    if (i + seqLen - 1 < lineEndIndex) {
       var s = _text, c, j;
       for (j = 0; j < seqLen; j++) {
         c = s.codeUnitAt(i + j);
@@ -357,10 +401,9 @@ class CodeUnitStream {
   }
   
   matchWhileNot(mc, [consume = false]) {
-    var r = -1, i = currentIndex, savei = i, len = lineEndIndex, c, s = text;
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex, s = text;
     while (i < len) {
-      c = s.codeUnitAt(i);
-      if (c == mc) {
+      if (s.codeUnitAt(i) == mc) {
         break;
       }
       i++;
@@ -449,6 +492,53 @@ class CodeUnitStream {
     while (i < len) {
       c = s.codeUnitAt(i);
       if (c == c1 || c == c2 || c == c3 || c == c4 || c == c5) {
+        break;
+      }
+      i++;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
+  eatWhileNeitherSix(c1, c2, c3, c4, c5, c6) {
+    return matchWhileNeitherSix(c1, c2, c3, c4, c5, c6, true) >= 0;
+  }
+  
+  matchWhileNeitherSix(c1, c2, c3, c4, c5, c6, [consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex, c, s = text;
+    while (i < len) {
+      c = s.codeUnitAt(i);
+      if (c == c1 || c == c2 || c == c3 || c == c4 || c == c5 ||
+          c == c6) {
+        break;
+      }
+      i++;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
+  eatWhileNeitherSeven(c1, c2, c3, c4, c5, c6, c7) {
+    return matchWhileNeitherSeven(c1, c2, c3, c4, c5, c6, c7, true) >= 0;
+  }
+  
+  matchWhileNeitherSeven(c1, c2, c3, c4, c5, c6, c7, [consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex,
+      c, s = text;
+    while (i < len) {
+      c = s.codeUnitAt(i);
+      if (c == c1 || c == c2 || c == c3 || c == c4 || c == c5 ||
+          c == c6 || c == c7) {
         break;
       }
       i++;
@@ -721,6 +811,51 @@ class CodeUnitStream {
     return r;
   }
 
+  eatAlphaUnderlineDigitMinus() {
+    return matchAlphaUnderlineDigitMinus(true) >= 0;
+  }
+  
+  eatWhileAlphaUnderlineDigitMinus() {
+    return matchWhileAlphaUnderlineDigitMinus(true) >= 0;
+  }
+  
+  // A-Z a-z _ 0-9
+  matchAlphaUnderlineDigitMinus([consume = false]) {
+    var r = -1, i = currentIndex;
+    if (i < lineEndIndex) {
+      var c = _text.codeUnitAt(i); // A-Z a-z _ 0-9 -
+      if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 95 ||
+          (c >= 48 && c <= 57) || c == 45) {
+        r = c;
+        if (consume) {
+          currentIndex = i + 1;
+        }
+      }
+    }
+    return r;
+  }
+  
+  matchWhileAlphaUnderlineDigitMinus([consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex, c, s = _text;
+    while (i < len) {
+      c = s.codeUnitAt(i);
+      if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c == 95 ||
+          (c >= 48 && c <= 57) || c == 45) {
+        // ignore
+      } else {
+        break;
+      }
+      i++;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+
   eatAlphaDigit() {
     return matchAlphaDigit(true) >= 0;
   }
@@ -766,16 +901,16 @@ class CodeUnitStream {
     return r;
   }
 
-  eatHexDigit() {
-    return matchHexDigit(true) >= 0;
+  eatHexa() {
+    return matchHexa(true) >= 0;
   }
   
-  eatWhileHexDigit() {
-    return matchWhileHexDigit(true) >= 0;
+  eatWhileHexa() {
+    return matchWhileHexa(true) >= 0;
   }
   
   // A-F a-f 0-9
-  matchHexDigit([consume = false]) {
+  matchHexa([consume = false]) {
     var r = -1, i = currentIndex;
     if (i < lineEndIndex) {
       var c = _text.codeUnitAt(i); // A-F a-f 0-9
@@ -790,7 +925,7 @@ class CodeUnitStream {
     return r;
   }
   
-  matchWhileHexDigit([consume = false]) {
+  matchWhileHexa([consume = false]) {
     var r = -1, i = currentIndex, savei = i, len = lineEndIndex, c, s = _text;
     while (i < len) {
       c = s.codeUnitAt(i);
@@ -1081,6 +1216,37 @@ class CodeUnitStream {
   // |
   matchPipe([consume = false]) {
     return matchCodeUnit(124, consume); // |
+  }
+  
+  // Extended matching
+  
+  eatInEscapedQuotes(qc) {
+    return matchInEscapedQuotes(qc, true) >= 0;
+  }
+  
+  matchInEscapedQuotes(qc, [consume = false]) {
+    var r = -1, i = currentIndex, s = _text;
+    if (qc == s.codeUnitAt(i)) {
+      var savei = i, len = lineEndIndex, escapeCount = 0, c;
+      for (++i; i < len; i++) {
+        c = s.codeUnitAt(i);
+        if (c == 92) { // \
+          escapeCount++;
+        } else if (c == qc && escapeCount % 2 == 0) {
+          break;
+        } else {
+          escapeCount = 0;
+        }
+      }
+      if (i < len) {
+        i++;
+        r = i - savei;
+        if (consume) {
+          currentIndex = i;
+        }
+      }
+    }
+    return r;
   }
   
   toString() {

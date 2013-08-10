@@ -1,6 +1,7 @@
 library HtmlLexer;
 
 import "common.dart";
+import "../../lang/lib/lang.dart";
 
 
 class HtmlLexer extends LexerCommon {

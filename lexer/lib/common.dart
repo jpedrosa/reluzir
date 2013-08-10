@@ -1,32 +1,65 @@
 library Lexer;
 
-import "../../codeunitstream/lib/codeunitstream.dart"; 
+import "../../codeunitstream/lib/codeunitstream.dart";
 import "../../str/lib/str.dart";
 import "../../lang/lib/lang.dart";
 
 
 class LexerStatus {
   
-  var tokenizer, spaceTokenizer;
+  var tokenizer, spaceTokenizer, commentTokenizer, saveTokenizer,
+    stored;
   
-  LexerStatus({entryTokenizer, spaceTokenizer}) {
-    tokenizer = entryTokenizer;
-    this.spaceTokenizer = spaceTokenizer;
-  }
+  LexerStatus({this.tokenizer, this.spaceTokenizer, this.commentTokenizer});
   
   clone() {
-    return new LexerStatus(entryTokenizer: tokenizer,
-        spaceTokenizer: spaceTokenizer);
+    var o = new LexerStatus(tokenizer: tokenizer,
+      spaceTokenizer: spaceTokenizer,
+      commentTokenizer: commentTokenizer);
+    o.saveTokenizer = saveTokenizer;
+    if (stored != null) {
+      var a = [], i, len = stored.length;
+      for (i = 0; i < len; i++) {
+        a.add(stored[i]);
+      }
+      o.stored = a;
+    }
+    return o;
   }
   
+  push(t) {
+    if (stored == null) {
+      stored = [];
+    }
+    stored.add(t);
+  }
+  
+  pop() => stored.removeLast();
+  
   operator == (other) {
+    var space = spaceTokenizer, otherSpace = other.spaceTokenizer,
+      comment = commentTokenizer, otherComment = other.commentTokenizer,
+      save = saveTokenizer, otherSave = other.saveTokenizer,
+      a = stored, otherA = other.stored;
     return tokenizer.toString() == other.tokenizer.toString() &&
-        spaceTokenizer.toString() == other.spaceTokenizer.toString();
+      ((space == null && otherSpace == null) || (space != null &&
+      otherSpace != null && space.toString() == otherSpace.toString())) &&
+      ((comment == null && otherComment == null) || (comment != null &&
+      otherComment != null &&
+      comment.toString() == otherComment.toString())) &&
+      ((a == null && otherA == null) || (a != null && otherA != null &&
+      a.length == otherA.length &&
+      a.toString() == otherA.toString())) &&
+      ((save == null && otherSave == null) || (save != null &&
+      otherSave != null && save.toString() == otherSave.toString()));
   }
   
   toString() {
     return "LexerStatus(tokenizer: ${tokenizer}, "
-        "spaceTokenizer: ${spaceTokenizer})";
+        "spaceTokenizer: ${spaceTokenizer}, "
+        "commentTokenizer: ${commentTokenizer}, "
+        "saveTokenizer: ${saveTokenizer}, "
+        "stored: ${inspect(stored)})";
   }
   
 }
@@ -34,7 +67,8 @@ class LexerStatus {
 
 class LexerCommon {
   
-  var entryTokenizer, defaultTokenizer, spaceTokenizer;
+  var entryTokenizer, defaultTokenizer, spaceTokenizer,
+    commentTokenizer;
 
   parseLine(stream, status, resultFn(tokenType)) {
     var tt;
@@ -42,6 +76,9 @@ class LexerCommon {
       tt = null;
       if (status.spaceTokenizer != null) {
         tt = status.spaceTokenizer(stream, status);
+      }
+      if (tt == null && status.commentTokenizer != null) {
+        tt = status.commentTokenizer(stream, status);
       }
       if (tt == null) {
         tt = status.tokenizer(stream, status);
@@ -80,8 +117,9 @@ class LexerCommon {
   }
   
   spawnStatus() {
-    return new LexerStatus(entryTokenizer: this.entryTokenizer,
-        spaceTokenizer: this.spaceTokenizer);
+    return new LexerStatus(tokenizer: this.entryTokenizer,
+        spaceTokenizer: this.spaceTokenizer,
+        commentTokenizer: this.commentTokenizer);
   }
   
 }
