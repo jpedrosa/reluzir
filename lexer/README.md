@@ -7,6 +7,8 @@ It includes the HtmlParser for a simple HTML parsing that could be used directly
 
 It could also serve a higher level parser with already parsed tokens.
 
+A [Hilite tutorial](https://github.com/jpedrosa/reluzir/tree/master/lexer/tutorial) that makes use of the Lexer classes is available.
+
 =========
 
 Recently added a CssLexer to the set:
