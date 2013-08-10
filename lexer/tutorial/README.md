@@ -13,7 +13,7 @@ The Lexer I've created with Dart does highlighting of [HTML](https://github.com/
 hilite.html
 -----------
 
-This file holds the HTML part of the application. At a minimum it points the browser towards the needed files. A Dart application could use very little or lots of HTML. Some of the core Dart libraries like Web UI and the one that supersedes it called Polymer start from the standpoint that we need HTML templating to succeed. But some new features of the browser like Canvas and WebGL can work without a lot of HTML. And the DOM could also be programmed without a lot of static HTML if we instead created elements at runtime.
+This file holds the HTML part of the application. At a minimum it points the browser towards the needed files. A Dart application could use very little or lots of HTML. Some of the core Dart libraries like Web UI and the one that supersedes it called Polymer start from the standpoint that we need HTML templating to succeed. Although some new features of the browser like Canvas and WebGL can work without a lot of HTML. And the DOM could also be programmed without a lot of static HTML if we instead created elements at runtime.
 
 The HTML file has two lines that are important to start it all:
 
