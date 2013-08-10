@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Hilite</title>
+    <style>
+      #ta1 {
+        width: 400px;
+        height: 600px; 
+      }
+      .debugWindow {
+        border: 1px solid gray;
+        padding: 2px;
+        background-color: silver;
+        position: absolute;
+        width: 150px;
+        height: 250px;
+        left: 700px;
+        top: 400px;
+        overflow: scroll;
+      }
+      #outputDiv1 {
+        float: left;
+        margin-left: 20px;
+        padding: 5px;
+        background-color: #FFF;
+        border: 1px solid orange;
+        width: 500px;
+        height: 600px;
+        overflow: scroll;
+      }
+      #hostTADiv1 {
+        float: left;
+        width: 400px;
+        height: 600px;
+      }
+      #clearDiv1 {
+        clear: both;
+      }
+      .cssText { color: red; }
+      .cssKeyword { color: green; }
+      .cssVariable { color: blue; }
+      .cssSymbol { color: #C8025A; }
+      .cssString { color: #9634BE; }
+      .cssComment { color: #3228C8; }
+      .cssHexa { color: #32C832; }
+      .cssNumber { color: #506478; }
+      
+      .htmlText { color: red; }
+      .htmlKeyword { color: green; }
+      .htmlVariable { color: blue; }
+      .htmlSymbol { color: #C8025A; }
+      .htmlString { color: #9634BE; }
+      .htmlComment { color: #3228C8; }
+      .htmlDoctype { color: #32C832; }
+    </style>
+  </head>
+  <body>
+    <h1>Hilite</h1>
+    <h2 id="status">Dart is not running</h2>
+    <div style="width:1000px; height:650px; border: 10px silver groove; padding:10px" >
+      <div>
+      <select id="selType"><option>CSS</option><option>HTML</option></select>
+      <button id="bHilite">Hilite!</button>
+      <button id="bLoadSample">Reload sample of selected type</button>
+      </div>
+      <div id="hostTADiv1">
+      <textarea id="ta1">Sample data</textarea>
+      </div>
+      <div id="outputDiv1"></div>
+      <div id="clearDiv1"></div>
+    </div>
+    <script type="application/dart" src="hilite.dart"></script>
+    <script src="dart.js"></script>
+  </body>
+</html>
+
+
+
+
