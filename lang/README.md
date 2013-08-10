@@ -93,7 +93,7 @@ Once run it prints:
 {"Ella": {"email": "foo@gmail.com"}, "Junior": {"email": "bar@gmail.com"}}
 ```
 
-As Dart doesn't have support for undefined number of arguments, one trick is to create a literal list or array yourself for the arguments. Like so:
+As Dart doesn't have support for variadic number of arguments, one trick is to create a literal list or array yourself for the arguments. Like so:
 
 ```dart
 p(["description", vFoo, sBar]);
