@@ -7,7 +7,7 @@ It's more of a language extension because the methods are important for developm
 
 ==============
 
-The inspect method was inspired by Ruby's own version of it. The main idea is that the String returned by it is more detailed. The String wraps content into their appropriate formats so they help to tell a more complete story about their actual content. Say if the String has just spaces, but if it comes between delimiters, we can tell where the spaces are, otherwise we'd have to try to guess.
+The inspect method was inspired by Ruby's own version of it. The main idea is that the String returned by it is more detailed. The String wraps content into their appropriate formats so they help to tell a more complete story about their actual content. Say if the String has just spaces, but if it comes between delimiters, we can tell where the spaces are, otherwise we'd have to try to guess it.
 
 ```dart
 String inspect(v)
@@ -93,7 +93,7 @@ Once run it prints:
 {"Ella": {"email": "foo@gmail.com"}, "Junior": {"email": "bar@gmail.com"}}
 ```
 
-As Dart doesn't have support for undefined number of arguments, one trick is to create a literal list or array yourself for the arguments. Like so:
+As Dart doesn't have support for variadic number of arguments, one trick is to create a literal list or array yourself for the arguments. Like so:
 
 ```dart
 p(["description", vFoo, sBar]);
