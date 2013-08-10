@@ -9,6 +9,32 @@ It could also serve a higher level parser with already parsed tokens.
 
 =========
 
+Recently added a CssLexer to the set:
+
+```dart
+import "../../lang/lib/lang.dart";
+import "../lib/css.dart";
+import "../../codeunitstream/lib/codeunitstream.dart";
+
+genSample1() => '.a { background-color: #FFF; }';
+
+main() {
+  var sample = genSample1(), lexer = new CssLexer(), tokens = [],
+    stream = new CodeUnitStream(text: sample);
+  lexer.parseTokenStrings(stream, lexer.spawnStatus(), 
+      (tt, ts) => tokens.add([tt, ts]));
+  p(tokens.map((kv) => [CssLexer.keywordString(kv[0]), kv[1]]).toList());
+}
+```
+
+When run it prints this:
+
+```
+[["text", ".a "], ["symbol", "{"], ["text", " "], ["variable", "background-color"], ["symbol", ":"], ["text", " "], ["hexa", "#FFF"], ["symbol", ";"], ["text", " "], ["symbol", "}"]]
+```
+
+=========
+
 Here's a sample:
 
 ```dart
