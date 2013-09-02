@@ -209,7 +209,7 @@ class HtmlLexer extends LexerCommon {
   
   inComment(stream, status) {
     var r;
-    if (stream.eatWhileNotString(CLOSE_COMMENT_STR)) { // -->
+    if (stream.eatUntilString(CLOSE_COMMENT_STR)) { // -->
       r = COMMENT;
     } else {
       r = inCloseComment(stream, status);

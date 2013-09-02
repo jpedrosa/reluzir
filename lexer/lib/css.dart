@@ -61,7 +61,7 @@ class CssLexer extends LexerCommon {
   static const URL_STR_LOWER = "url";
   
   inComment(stream, status) {
-    if (stream.eatWhileNotString(CLOSE_COMMENT_STR)) {
+    if (stream.eatUntilString(CLOSE_COMMENT_STR)) {
       // ignore
     } else {
       stream.currentIndex += 2; // */

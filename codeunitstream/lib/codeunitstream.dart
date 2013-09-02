@@ -37,7 +37,7 @@ class CodeUnitStream {
   
   get isEol => currentIndex >= lineEndIndex;
   
-  get isSol => currentIndex == lineStartIndex;
+  get isBol => currentIndex == lineStartIndex;
   
   peek() {
     return currentIndex < lineEndIndex ? _text.codeUnitAt(currentIndex) : -1;
@@ -83,11 +83,11 @@ class CodeUnitStream {
   }
   
   eat(c) {
-    return matchCodeUnit(c) >= 0;
+    return matchCodeUnit(c, true) >= 0;
   }
   
   eatWhile(c) {
-    return matchRepeatedCodeUnit(c) >= 0;
+    return matchRepeatedCodeUnit(c, true) >= 0;
   }
 
   eatSpace() {
@@ -172,6 +172,7 @@ class CodeUnitStream {
   
   skipToEnd() {
     currentIndex = lineEndIndex;
+    return true;
   }
 
   skipTo(c) {
@@ -361,11 +362,11 @@ class CodeUnitStream {
     return r;
   }
 
-  eatWhileNotString(string) {
-    return matchWhileNotString(string, true) >= 0;
+  eatUntilString(string) {
+    return matchUntilString(string, true) >= 0;
   }
   
-  matchWhileNotString(string, [consume = false]) {
+  matchUntilString(string, [consume = false]) {
     var r = -1, i = currentIndex, savei = i, seqLen = string.length,
       len = lineEndIndex - seqLen + 1, c, s = text, 
       sfc = string.codeUnitAt(0), j;
@@ -391,6 +392,65 @@ class CodeUnitStream {
       r = i - savei;
       if (consume) {
         currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
+  // Triple quotes sequence
+  eatUntilThree(c1, c2, c3) {
+    return matchUntilThree(c1, c2, c3, true) >= 0;
+  }
+  
+  matchUntilThree(c1, c2, c3, [consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex - 2,
+      s = text;
+    while (i < len) {
+      if (s.codeUnitAt(i) == c1 && s.codeUnitAt(i + 1) == c2 &&
+          s.codeUnitAt(i + 2) == c3) {
+        break;
+      }
+      i++;
+    }
+    if (i >= len) {
+      i = lineEndIndex;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+
+  eatTwo(c1, c2) {
+    return matchTwo(c1, c2, true) >= 0;
+  }
+  
+  matchTwo(c1, c2, [consume = false]) {
+    var r = -1, i = currentIndex, s = text;
+    if (i < lineEndIndex - 2 && s.codeUnitAt(i) == c1 &&
+        s.codeUnitAt(i + 1) == c2) {
+      r = 2;
+      if (consume) {
+        currentIndex = i + 2;
+      }
+    }
+    return r;
+  }
+  
+  eatThree(c1, c2, c3) {
+    return matchThree(c1, c2, c3, true) >= 0;
+  }
+  
+  matchThree(c1, c2, c3, [consume = false]) {
+    var r = -1, i = currentIndex, s = text;
+    if (i < lineEndIndex - 2 && s.codeUnitAt(i) == c1 &&
+        s.codeUnitAt(i + 1) == c2 && s.codeUnitAt(i + 2) == c3) {
+      r = 3;
+      if (consume) {
+        currentIndex = i + 3;
       }
     }
     return r;
@@ -1056,12 +1116,12 @@ class CodeUnitStream {
     return matchCodeUnit(33, consume); // !
   }
   
-  eatQuotation() {
-    return matchQuotation(true) >= 0;
+  eatQuestionMark() {
+    return matchQuestionMark(true) >= 0;
   }
   
   // ?
-  matchQuotation([consume = false]) {
+  matchQuestionMark([consume = false]) {
     return matchCodeUnit(63, consume); // ?
   }
   
@@ -1218,7 +1278,38 @@ class CodeUnitStream {
     return matchCodeUnit(124, consume); // |
   }
   
+  eatCircumflex() {
+    return matchCircumflex(true) >= 0;
+  }
+  
+  // ^
+  matchCircumflex([consume = false]) {
+    return matchCodeUnit(94, consume); // ^
+  }
+  
   // Extended matching
+
+  eatInQuotes(qc) {
+    return matchInQuotes(qc, true) >= 0;
+  }
+  
+  matchInQuotes(qc, [consume = false]) {
+    var r = -1, i = currentIndex, s = _text;
+    if (qc == s.codeUnitAt(i)) {
+      var savei = i, len = lineEndIndex;
+      for (i++; i < len; i++) {
+        if (s.codeUnitAt(i) == qc) {
+          i++;
+          r = i - savei;
+          if (consume) {
+            currentIndex = i;
+          }
+          break;
+        }
+      }
+    }
+    return r;
+  }
   
   eatInEscapedQuotes(qc) {
     return matchInEscapedQuotes(qc, true) >= 0;
@@ -1240,6 +1331,352 @@ class CodeUnitStream {
       }
       if (i < len) {
         i++;
+        r = i - savei;
+        if (consume) {
+          currentIndex = i;
+        }
+      }
+    }
+    return r;
+  }
+
+  eatUntilEscapedString(string) {
+    return matchUntilEscapedString(string, true) >= 0;
+  }
+  
+  matchUntilEscapedString(string, [consume = false]) {
+    var r = -1, i = currentIndex, lei = lineEndIndex,
+      jlen = string.length, len = lei - jlen + 1;
+    if (i < len) {
+      var s = _text, savei = i, j, escapeCount = 0, c,
+        fc = string.codeUnitAt(0);
+      for (; i < len; i++) {
+        c = s.codeUnitAt(i);
+        if (c == 92) { // \
+          escapeCount++;
+        } else if (c == fc && escapeCount % 2 == 0) {
+          for (j = 1; j < jlen; j++) {
+            if (s.codeUnitAt(i + j) != string.codeUnitAt(j)) {
+              break;
+            }
+          }
+          if (j >= jlen) {
+            break;
+          }
+        } else {
+          escapeCount = 0;
+        }
+      }
+      if (i > savei) {
+        r = i - savei;
+        if (consume) {
+          currentIndex = i;
+        }
+      }
+    } else if (i < lei) {
+      r = lei - i;
+      if (consume) {
+        currentIndex = lei;
+      }
+    }
+    return r;
+  }
+
+  eatEscapingUntil(fn(c)) {
+    return matchEscapingUntil(fn, true) >= 0;
+  }
+  
+  matchEscapingUntil(fn(c), [consume = false]) {
+    var r = -1, i = currentIndex, len = lineEndIndex, s = _text,
+      savei = i, escapeCount = 0, c;
+    for (; i < len; i++) {
+      c = s.codeUnitAt(i);
+      if (c == 92) { // \
+        escapeCount++;
+      } else if (escapeCount % 2 == 0 && fn(c)) {
+        break;
+      } else {
+        escapeCount = 0;
+      }
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
+  eatKeyword(s) {
+    return matchKeyword(s, true) >= 0;
+  }
+  
+  matchKeyword(s, [consume = false]) {
+    var r = -1, len = s.length, i = currentIndex;
+    if (i + len <= lineEndIndex) {
+      var savei = i;
+      currentIndex = i + len;
+      if (matchAlphaUnderlineDigit() < 0) {
+        currentIndex = i;
+        r = matchString(s);
+        if (r >= 0 && consume) {
+          currentIndex += len;
+        }
+      } else {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+
+  // Triple quotes sequence
+  eatEscapingUntilThree(c1, c2, c3) {
+    return matchEscapingUntilThree(c1, c2, c3, true) >= 0;
+  }
+  
+  matchEscapingUntilThree(c1, c2, c3, [consume = false]) {
+    var r = -1, i = currentIndex, savei = i, len = lineEndIndex - 2,
+      s = text, c, escapeCount = 0;
+    while (i < len) {
+      c = s.codeUnitAt(i);
+      if (c == 92) { // \
+        escapeCount++;
+      } else if (escapeCount % 2 == 0 && s.codeUnitAt(i) == c1 &&
+          s.codeUnitAt(i + 1) == c2 && s.codeUnitAt(i + 2) == c3) {
+        break;
+      } else {
+        escapeCount = 0;
+      }
+      i++;
+    }
+    if (i >= len) {
+      i = lineEndIndex;
+    }
+    if (i > savei) {
+      r = i - savei;
+      if (consume) {
+        currentIndex = i;
+      }
+    }
+    return r;
+  }
+  
+  // String list matching
+  
+  makeFirstCharTable(strings) {
+    var i, len = strings.length, a = new List(256), zz, c, z;
+    for (i = 0; i < len; i++) {
+      z = strings[i];
+      c = z.codeUnitAt(0);
+      zz = a[c];
+      if (zz == null) {
+        zz = [z];
+        a[c] = zz;
+      } else {
+        zz.add(z);
+      }
+    }
+    return a;
+  }
+  
+  eatStringFromList(strings) {
+    return matchStringFromList(strings, true) >= 0;
+  }
+
+  matchStringFromList(strings, [consume = false]) {
+    var r = -1, i = currentIndex, len = lineEndIndex;
+    if (i < len) {
+      var s = text, j, jlen = strings.length, z, zi, zlen;
+      for (j = 0; j < jlen; j++) {
+        z = strings[j];
+        zlen = z.length;
+        if (i + zlen <= len) {
+          for (zi = 0; zi < zlen; zi++) {
+            if (s.codeUnitAt(i + zi) != z.codeUnitAt(zi)) {
+              break;
+            }
+          }
+          if (zi >= zlen) {
+            break;
+          }
+        }
+      }
+      if (j < jlen) {
+        r = zi;
+        if (consume) {
+          currentIndex = i + zlen;
+        }
+      }
+    }
+    return r;
+  }
+  
+  eatUntilIncludingStringFromList(firstCharTable) {
+    return matchUntilIncludingStringFromList(firstCharTable, true) >= 0;
+  }
+
+  matchUntilIncludingStringFromList(firstCharTable, [consume = false]) {
+    var r = -1, i = currentIndex, len = lineEndIndex;
+    if (i < len) {
+      var s = text, j, jlen, z, zi, zlen, c, zz;
+      for (; i < len; i++) {
+        c = s.codeUnitAt(i);
+        zz = firstCharTable[c];
+        if (zz != null) {
+          jlen = zz.length;
+          for (j = 0; j < jlen; j++) {
+            z = zz[j];
+            zlen = z.length;
+            if (i + zlen <= len) {
+              for (zi = 1; zi < zlen; zi++) {
+                if (s.codeUnitAt(i + zi) != z.codeUnitAt(zi)) {
+                  break;
+                }
+              }
+              if (zi >= zlen) {
+                break;
+              }
+            }
+          }
+          if (j < jlen) {
+            r = zi;
+            if (consume) {
+              currentIndex = i + zlen;
+            }
+            break;
+          }
+        }
+      }
+    }
+    return r;
+  }
+
+  eatUntilIncludingString(string) {
+    return matchUntilIncludingString(string, true) >= 0;
+  }
+
+  matchUntilIncludingString(string, [consume = false]) {
+    var r = -1, i = currentIndex, zlen = string.length, 
+      len = lineEndIndex - zlen + 1;
+    if (i < len) {
+      var s = text, c, zi, sfc = string.codeUnitAt(0); 
+      for (; i < len; i++) {
+        c = s.codeUnitAt(i);
+        if (c == sfc) {
+          for (zi = 1; zi < zlen; zi++) {
+            if (s.codeUnitAt(i + zi) != string.codeUnitAt(zi)) {
+              break;
+            }
+          }
+          if (zi >= zlen) {
+            r = i + zlen;
+            if (consume) {
+              currentIndex = r;
+            }
+            break;
+          }
+        }
+      }
+    }
+    return r;
+  }
+
+  eatIfNotStringFromList(strings) {
+    return matchIfNotStringFromList(strings, true) >= 0;
+  }
+
+  matchIfNotStringFromList(strings, [consume = false]) {
+    var r = -1, i = currentIndex, mi;
+    if (i < lineEndIndex) {
+      mi = matchStringFromList(strings);
+      if (mi < 0) {
+        r = 1;
+        if (consume) {
+          currentIndex = i + 1;
+        }
+      }
+    }
+    return r;
+  }
+
+  eatWhileNotStringFromList(firstCharTable) {
+    return matchWhileNotStringFromList(firstCharTable, true) >= 0;
+  }
+
+  matchWhileNotStringFromList(firstCharTable, [consume = false]) {
+    var r = -1, i = currentIndex, len = lineEndIndex;
+    if (i < len) {
+      var s = text, j, jlen, z, zi, zlen, c, savei = i, zz;
+      for (; i < len; i++) {
+        c = s.codeUnitAt(i);
+        zz = firstCharTable[c];
+        if (zz != null) {
+          jlen = zz.length;
+          for (j = 0; j < jlen; j++) {
+            z = zz[j];
+            zlen = z.length;
+            if (i + zlen <= len) {
+              for (zi = 1; zi < zlen; zi++) {
+                if (s.codeUnitAt(i + zi) != z.codeUnitAt(zi)) {
+                  break;
+                }
+              }
+              if (zi >= zlen) {
+                break;
+              }
+            }
+          }
+          if (j < jlen) {
+            break;
+          }
+        }
+      }
+      if (i > savei) {
+        r = i - savei;
+        if (consume) {
+          currentIndex = i;
+        }
+      }
+    }
+    return r;
+  }
+
+  eatWhileStringFromList(firstCharTable) {
+    return matchWhileStringFromList(firstCharTable, true) >= 0;
+  }
+
+  matchWhileStringFromList(firstCharTable, [consume = false]) {
+    var r = -1, i = currentIndex, len = lineEndIndex;
+    if (i < len) {
+      var s = text, j, jlen, z, zi, zlen, c, savei = i, zz;
+      for (; i < len; i++) {
+        c = s.codeUnitAt(i);
+        zz = firstCharTable[c];
+        if (zz == null) {
+          break;
+        } else {
+          jlen = zz.length;
+          for (j = 0; j < jlen; j++) {
+            z = zz[j];
+            zlen = z.length;
+            if (i + zlen <= len) {
+              for (zi = 1; zi < zlen; zi++) {
+                if (s.codeUnitAt(i + zi) != z.codeUnitAt(zi)) {
+                  break;
+                }
+              }
+              if (zi >= zlen) {
+                break;
+              }
+            }
+          }
+          if (j >= jlen) {
+            break;
+          }
+        }
+      }
+      if (i > savei) {
         r = i - savei;
         if (consume) {
           currentIndex = i;
