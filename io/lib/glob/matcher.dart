@@ -413,7 +413,7 @@ class GlobMatcher {
       m.skipToEnd();
     }
     m.matchEos();
-    p(m);
+    //p(m);
     return m;
   }
   
