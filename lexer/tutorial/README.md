@@ -13,7 +13,7 @@ The Lexer I've created with Dart does highlighting of [HTML](https://github.com/
 hilite.html
 -----------
 
-This file holds the HTML part of the application. At a minimum it points the browser towards the needed files. A Dart application could use very little or lots of HTML. Some of the core Dart libraries like Web UI and the one that supersedes it called Polymer start from the standpoint that we need HTML templating to succeed. But some new features of the browser like Canvas and WebGL can work without a lot of HTML. And the DOM could also be programmed without a lot of static HTML if we instead created elements at runtime.
+This file holds the HTML part of the application. At a minimum it points the browser towards the needed files. A Dart application could use very little or lots of HTML. Some of the core Dart libraries like Web UI and the one that supersedes it called Polymer start from the standpoint that we need HTML templating to succeed. Although some new features of the browser like Canvas and WebGL can work without a lot of HTML. And the DOM could also be programmed without a lot of static HTML if we instead created elements at runtime.
 
 The HTML file has two lines that are important to start it all:
 
@@ -42,7 +42,7 @@ That Doctype is the simplified one of HTML5.
 hilite.dart
 -----------
 
-This file is the actual Dart file. It could also be a packaged file if we had used one of the Dart compilers to package it up. Creating a deployment package with Dart is very cool. It brings all the dependencies into a single file, while also removing a lot of the code that the program doesn't use, but just exists in the libraries that the program has access to.
+This file is the actual Dart file. It could also be a packaged file if we had used one of the Dart compilers to package it up. Creating a deployment package with Dart is very cool. It brings all the dependencies into a single file, while also removing a lot of the code that the program doesn't use that just takes space in the libraries being imported.
 
 With all of the dependencies being put into a single file, loading the Dart application is faster!
 
@@ -133,14 +133,16 @@ Check the [remainder of the hilite.dart code.](https://github.com/jpedrosa/reluz
 For more on Dart, be sure to check its thorough website: http://www.dartlang.org/
 The Dart site includes API references, Editor download and much more.
 
+An alternative is the [Learn Dart in 15 minutes tutorial.](https://github.com/jpedrosa/reluzir/blob/master/learn_dart_in_15_minutes/learn_dart_in_15_minutes.dart))
+
 You can see a screenshot of the Hilite application:
 
 ![hilite.png](hilite.png)
 
-And you can run it instead by clicking here:
+And you can run it instead by clicking here: http://jpedrosa.github.io/reluzir/hilite_tutorial/index.html
 
 
-I think Dart is due a bright future. Some web application programming with Canvas, WebGL and so on is still being discovered. But when coupled with the unique features of Dart like in ease of deployment, it could make a lot of sense. Meanwhile, JavaScript is also here to stay. Maybe the two of them could be coupled both on the client and on the server. Two is always better than one, right? :-)
+I think Dart is due a bright future. Some web application programming with Canvas, WebGL and so on is still being discovered. But when coupled with the unique features of Dart like its ease of deployment, it could make a lot of sense. Meanwhile, JavaScript is also here to stay. Maybe the two of them could be coupled both on the client and on the server. Two is always better than one, right? :-)
 
 Thanks for reading.
 
