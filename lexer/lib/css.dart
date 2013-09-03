@@ -65,7 +65,7 @@ class CssLexer extends LexerCommon {
       // ignore
     } else {
       stream.currentIndex += 2; // */
-      status.tokenizer = status.saveTokenizer;
+      status.tokenizer = status.pop();
       status.spaceTokenizer = space;
     }
     return COMMENT;
@@ -272,7 +272,7 @@ class CssLexer extends LexerCommon {
     var r;
     if (stream.eatString(OPEN_COMMENT_STR)) {
       r = COMMENT;
-      status.saveTokenizer = outTokenizer;
+      status.push(outTokenizer);
       status.spaceTokenizer = null;
       status.tokenizer = inComment;
     }

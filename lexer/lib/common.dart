@@ -7,8 +7,7 @@ import "../../lang/lib/lang.dart";
 
 class LexerStatus {
   
-  var tokenizer, spaceTokenizer, commentTokenizer, saveTokenizer,
-    stored;
+  var tokenizer, spaceTokenizer, commentTokenizer, stored;
   
   LexerStatus({this.tokenizer, this.spaceTokenizer, this.commentTokenizer}) {
     stored = [];
@@ -19,7 +18,6 @@ class LexerStatus {
       spaceTokenizer: spaceTokenizer,
       commentTokenizer: commentTokenizer),
       len = stored.length;
-    o.saveTokenizer = saveTokenizer;
     if (len > 0) {
       var a = o.stored, i;
       for (i = 0; i < len; i++) {
@@ -48,7 +46,6 @@ class LexerStatus {
   operator == (other) {
     var space = spaceTokenizer, otherSpace = other.spaceTokenizer,
       comment = commentTokenizer, otherComment = other.commentTokenizer,
-      save = saveTokenizer, otherSave = other.saveTokenizer,
       a = stored, otherA = other.stored;
     return tokenizer.toString() == other.tokenizer.toString() &&
       ((space == null && otherSpace == null) || (space != null &&
@@ -56,22 +53,18 @@ class LexerStatus {
       ((comment == null && otherComment == null) || (comment != null &&
       otherComment != null &&
       comment.toString() == otherComment.toString())) &&
-      (a.length == otherA.length && a.toString() == otherA.toString()) &&
-      ((save == null && otherSave == null) || (save != null &&
-      otherSave != null && save.toString() == otherSave.toString()));
+      (a.length == otherA.length && a.toString() == otherA.toString());
   }
   
   get hashCode => "LexerStatus(tokenizer: ${tokenizer}, "
       "spaceTokenizer: ${spaceTokenizer}, "
       "commentTokenizer: ${commentTokenizer}, "
-      "saveTokenizer: ${saveTokenizer}, "
       "stored: ${stored.toString()})".hashCode;
   
   toString() {
     return "LexerStatus(tokenizer: ${tokenizer}, "
         "spaceTokenizer: ${spaceTokenizer}, "
         "commentTokenizer: ${commentTokenizer}, "
-        "saveTokenizer: ${saveTokenizer}, "
         "stored: ${inspect(stored)})";
   }
   
