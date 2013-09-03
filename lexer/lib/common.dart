@@ -10,31 +10,40 @@ class LexerStatus {
   var tokenizer, spaceTokenizer, commentTokenizer, saveTokenizer,
     stored;
   
-  LexerStatus({this.tokenizer, this.spaceTokenizer, this.commentTokenizer});
+  LexerStatus({this.tokenizer, this.spaceTokenizer, this.commentTokenizer}) {
+    stored = [];
+  }
   
   clone() {
     var o = new LexerStatus(tokenizer: tokenizer,
       spaceTokenizer: spaceTokenizer,
-      commentTokenizer: commentTokenizer);
+      commentTokenizer: commentTokenizer),
+      len = stored.length;
     o.saveTokenizer = saveTokenizer;
-    if (stored != null) {
-      var a = [], i, len = stored.length;
+    if (len > 0) {
+      var a = o.stored, i;
       for (i = 0; i < len; i++) {
         a.add(stored[i]);
       }
-      o.stored = a;
     }
     return o;
   }
   
   push(t) {
-    if (stored == null) {
-      stored = [];
-    }
     stored.add(t);
   }
   
   pop() => stored.removeLast();
+  
+  unshift(e) {
+    stored.insert(0, e);
+  }
+  
+  shift() {
+    var e = stored[0];
+    stored.removeAt(0);
+    return e;
+  }
   
   operator == (other) {
     var space = spaceTokenizer, otherSpace = other.spaceTokenizer,
@@ -47,12 +56,16 @@ class LexerStatus {
       ((comment == null && otherComment == null) || (comment != null &&
       otherComment != null &&
       comment.toString() == otherComment.toString())) &&
-      ((a == null && otherA == null) || (a != null && otherA != null &&
-      a.length == otherA.length &&
-      a.toString() == otherA.toString())) &&
+      (a.length == otherA.length && a.toString() == otherA.toString()) &&
       ((save == null && otherSave == null) || (save != null &&
       otherSave != null && save.toString() == otherSave.toString()));
   }
+  
+  get hashCode => "LexerStatus(tokenizer: ${tokenizer}, "
+      "spaceTokenizer: ${spaceTokenizer}, "
+      "commentTokenizer: ${commentTokenizer}, "
+      "saveTokenizer: ${saveTokenizer}, "
+      "stored: ${stored.toString()})".hashCode;
   
   toString() {
     return "LexerStatus(tokenizer: ${tokenizer}, "
@@ -87,6 +100,8 @@ class LexerCommon {
           tt = defaultTokenizer(stream, status);
         }
       }
+      //p([stream.currentTokenString, status.tokenizer]);
+      //p(status.stored);
       resultFn(tt);
       stream.startIndex = stream.currentIndex;
     }
