@@ -170,7 +170,6 @@ class GlobMatcher {
       m.skipToEnd();
     }
     m.matchEos();
-    p(m);
     return m;
   }
   
