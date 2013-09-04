@@ -33,9 +33,12 @@ class GlobParserStatus extends ParserStatus {
 
 class GlobParser {
   
-  var lexer;
+  var lexer, customMatcher;
   
-  GlobParser() {
+  GlobParser({this.customMatcher()}) {
+    if (customMatcher == null) {
+      customMatcher = () => new GlobMatcher();
+    }
     lexer = new GlobLexer();
   }
 
@@ -55,9 +58,18 @@ class GlobParser {
   static const CIRCUMFLEX_STR = '^';
   static const MINUS_STR = '-';
   
+  spawnMatcher() {
+    var r;
+    if (customMatcher != null) {
+      r = customMatcher();
+    } else {
+      r = new GlobMatcher();
+    }
+    return r;
+  }
+  
   parse(s) {
-    var m = new GlobMatcher(), types = [], startIndexes = [],
-      strings = [],
+    var m, types = [], startIndexes = [], strings = [],
       endIndexes = [], len, stream = new CodeUnitStream(text: s);
     lexer.parse(stream, lexer.spawnStatus(),
         (tt) { 
@@ -70,12 +82,14 @@ class GlobParser {
     if (len > 0 && types[len - 1] != TEXT) {
       m = doParse(new TokenStream(types: types, strings: strings, 
         startIndexes: startIndexes, endIndexes: endIndexes));
+    } else {
+      m = spawnMatcher();
     }
     return m;
   }
   
   doParse(stream) {
-    var m = new GlobMatcher(),
+    var m = spawnMatcher(),
       status = new GlobParserStatus(parser: inRoot, matcher: m);
     status.parser = inRoot;
     try {
@@ -85,12 +99,12 @@ class GlobParser {
         stream.currentIndex++;
       }
       if (status.stored.length > 0) {
-        m = new GlobMatcher();
+        m = spawnMatcher();
         //throw "Expected zero length stored status. "
         //    "Got: ${inspect(status.stored)}";
       }
     } catch (e) {
-      m = new GlobMatcher();
+      m = spawnMatcher();
     }
     return m;
   }

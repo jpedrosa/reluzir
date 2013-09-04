@@ -3,6 +3,7 @@ library Dir;
 import "dart:io" as DIO;
 import "../../lang/lib/lang.dart";
 import "glob/parser.dart";
+import "glob/listsyncmatcher.dart";
 
 
 class DirImpl {
@@ -10,7 +11,8 @@ class DirImpl {
   var _globParser;
   
   DirImpl() {
-    _globParser = new GlobParser();
+    _globParser = new GlobParser(customMatcher: 
+        () => new GlobListSyncMatcher());
   }
   
   glob(s, {skipDotFiles: true, ignoreCase}) {
