@@ -8,7 +8,7 @@ import "matcher.dart";
 
 class GlobListSyncMatcher extends GlobMatcher {
   
-  var _d, isWin, skipDotFiles = false, followLinks = true;
+  var _d, isWin, skipDotFiles = false, followLinks = false;
   
   GlobListSyncMatcher() {
     isWin = Dir.isWindows;
