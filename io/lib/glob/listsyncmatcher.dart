@@ -8,7 +8,7 @@ import "matcher.dart";
 
 class GlobListSyncMatcher extends GlobMatcher {
   
-  var _d, isWin, skipDotFiles = false;
+  var _d, isWin, skipDotFiles = false, followLinks = true;
   
   GlobListSyncMatcher() {
     isWin = Dir.isWindows;
@@ -94,7 +94,7 @@ class GlobListSyncMatcher extends GlobMatcher {
   listFiles(d) {
     var r;
     try {
-      r = d.listSync(followLinks: false);
+      r = d.listSync(followLinks: followLinks);
     } catch (e) {
       r = [];
     }
