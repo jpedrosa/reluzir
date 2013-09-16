@@ -64,6 +64,63 @@ class StrImpl {
     }
     return r;
   }
+
+  static const NEW_LINE = "\n";
+  static const WINDOWS_NEW_LINE = "\r\n";
+  
+  withNewLinePreference(s, needCrlf, fn(s, newLineStr)) {
+    var len = s.length, cr = -1, cn = -1, nStr;
+    if (len > 1) {
+      cn = s.codeUnitAt(len - 1);
+      cr = s.codeUnitAt(len - 2);
+      if (needCrlf) {
+        if (cn == 10) { // new line
+          if (cr != 13) { // Windows carriage return
+            s = s.substring(0, len - 1);
+            nStr = WINDOWS_NEW_LINE;
+          }
+        } else if (cn == 13) {
+          nStr = NEW_LINE;
+        } else {
+          nStr = WINDOWS_NEW_LINE;
+        }
+      } else {
+        if (cn == 10) {
+          if (cr == 13) {
+            s = s.substring(0, len - 2);
+            nStr = NEW_LINE;
+          }
+        } else if (cn == 13) {
+          s = s.substring(0, len - 1);
+          nStr = NEW_LINE;
+        } else {
+          nStr = NEW_LINE;
+        }
+      }
+    } else if (len > 0) {
+      cn = s.codeUnitAt(len - 1); // new line
+      if (needCrlf) {
+        if (cn == 10) {
+          s = "";
+          nStr = WINDOWS_NEW_LINE;
+        } else if (cn == 13) {
+          nStr = NEW_LINE;
+        } else {
+          nStr = WINDOWS_NEW_LINE;
+        }
+      } else {
+        if (cn == 10) {
+          // ignore
+        } else if (cn == 13) {
+          s = "";
+          nStr = NEW_LINE;
+        } else {
+          nStr = NEW_LINE;
+        }
+      }
+    }
+    fn(s, nStr);
+  }
   
 }
 

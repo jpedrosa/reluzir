@@ -3,6 +3,69 @@ IO
 
 The IO library is devoted to bringing some ease of use to Dart IO. It borrows ideas from Ruby, starting with a Glob pattern matching for browsing files and directories.
 
+File
+----
+
+The default File class of Dart just maps to some fairly atomic and easy-to-use methods to both read and write stuff in one single call. With this new File class we turn it into the RandomAccessFile for the sync APIs, but also inspired by Ruby with some new additions as shown in the following sample:
+
+```dart
+import "../../lang/lib/lang.dart";
+import "../lib/io.dart";
+import "../lib/file.dart";
+
+
+main() {
+  var af, fruits = ["Banana\n", "Grapes\n", "Watermelon"];
+//File.open("c:/t_/d2.txt", "w") {|f| f.puts fruits } Ruby version
+  af = File.open("fruits_sample.txt", "w", (f) => f.puts(fruits));
+  /*af = File.open("fruits_sample.txt", "a", (f) { // "a" mode for appending.
+    f << "Banana\n" << "Grapes\n" << "Watermelon\n";
+  });
+  af = File.open("fruits_sample.txt", "w", (f) {
+    f << "Banana\n" << "Grapes\n" << "Watermelon\n";
+  });*/
+  p("File path: ${af.path}");
+  var a = IO.readLines("fruits_sample.txt"), e;
+  p(a.length);
+  for (e in a) {
+    p(e);
+  }
+  a = IO.readLines("stored_fruits_sample.txt");
+  p(a.length);
+  for (e in a) {
+    p(e);
+  }
+}
+```
+
+Like in Ruby, File.open takes a block. When the block is provided via a function parameter, the block is called and the file is closed soon thereafter.
+
+The static methods of Dart's File class, their sync versions, can be used from the IO class instead. In Ruby class and instance can have same name methods. In Dart that's not possible because in Dart there's a conflict in that case. So File takes some names that are used by the instance and IO takes names that are used like the static ones.
+
+----------
+
+By the way, given that in Dart we have Async and Sync IO, and depending on the use case we could prefer one to the other, I haven't settled on my choices of IO APIs quite yet.
+
+IO
+--
+
+The IO class is also inspired by Ruby's own IO class. Fortunately in Dart there are already some easy-to-use File methods to read string and lines. With the IO class they just are sync by default and are more succinct. As shown in this sample:
+
+```dart
+import "../../lang/lib/lang.dart";
+import "../lib/io.dart";
+
+
+main() {
+  var a = IO.readLines("fruits_sample.txt"), e;
+  p(a.length);
+  for (e in a) {
+    p(e);
+  }
+  p(IO.read("fruits_sample.txt"));
+}
+```
+
 Glob
 ----
 
