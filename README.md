@@ -21,7 +21,6 @@ A short sample:
 import "../../lib/filepath.dart";
 import "../../../lang/lib/lang.dart";
 
-
 main() {
   var fp = new FilePath(windows: true);
   p(fp.ensureWindowsPath("../publish/web/"));
@@ -32,7 +31,6 @@ main() {
   p(fp.extName("c:/t_/afile.txt"));
   p(fp.join("c:/apps", "dart/dart-sdk"));
   p(fp.expandPath("c:/t_/../apps/dart"));
-}
 }
 ```
 
