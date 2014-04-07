@@ -10,6 +10,34 @@ Know Dart yet? We also have [learn Dart in 15 minutes tutorial.](https://github.
 
 =======
 
+FilePath
+--------
+
+FilePath is a library that provides some handy methods for working with file paths. The inspiration comes from Ruby.
+
+A short sample:
+
+```dart
+import "../../lib/filepath.dart";
+import "../../../lang/lib/lang.dart";
+
+
+main() {
+  var fp = new FilePath(windows: true);
+  p(fp.ensureWindowsPath("../publish/web/"));
+  p(fp.ensureLinuxPath("..\\publish\\web/"));
+  p(fp.baseName("../publish/web.oba/"));
+  p(fp.baseName("../publish/web.oba/", ".oba"));
+  p(fp.dirName("c:/t_/sophia/afile.txt"));
+  p(fp.extName("c:/t_/afile.txt"));
+  p(fp.join("c:/apps", "dart/dart-sdk"));
+  p(fp.expandPath("c:/t_/../apps/dart"));
+}
+}
+```
+
+=======
+
 Lexer
 -----
 
