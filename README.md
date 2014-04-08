@@ -22,7 +22,7 @@ import "../../lib/filepath.dart";
 import "../../../lang/lib/lang.dart";
 
 main() {
-  var fp = new FilePath(windows: true);
+  var fp = new FilePath();
   p(fp.ensureWindowsPath("../publish/web/"));
   p(fp.ensureLinuxPath("..\\publish\\web/"));
   p(fp.baseName("../publish/web.oba/"));
