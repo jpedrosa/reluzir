@@ -5,12 +5,6 @@ import "../../lang/lib/lang.dart";
 
 class FilePath {
   
-  var _win;
-  
-  FilePath({windows: false}) {
-    _win = windows;
-  }
-  
   ensureWindowsPath(path) {
     return new String.fromCharCodes(doEnsureWindowsPath(path.codeUnits));
   }
@@ -19,16 +13,6 @@ class FilePath {
     return new String.fromCharCodes(doEnsureLinuxPath(path.codeUnits));
   }
   
-  ensureOsPath(path) {
-    var r;
-    if (_win) {
-      r = ensureWindowsPath(path);
-    } else {
-      r = ensureLinuxPath(path);
-    }
-    return r;
-  }
-
   doEnsureWindowsPath(codeUnits) {
     var i, len = codeUnits.length, r = new List(len), c;
     for (i = 0; i < len; i++) {
@@ -263,6 +247,20 @@ class FilePath {
       }
     }
     return sb.toString();
+  }
+
+  isRootPath(path) {
+    var b = false, len = path.length;
+    if (len > 0) {
+      var c = path.codeUnitAt(0);
+      if (c == 47 || c == 92) {
+        b = true;
+      } else if (((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) && // A-Z a-z
+          len > 1) { 
+        b = path.codeUnitAt(1) == 58; // :
+      }
+    }
+    return b;
   }
   
 }

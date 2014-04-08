@@ -4,7 +4,7 @@ import "../../../lang/lib/lang.dart";
 
 
 main() {
-  var fp = new FilePath(windows: true);/*
+  var fp = new FilePath();/*
   //p(fp.ensureWindowsPath("../publish/web/"));
   p(fp.baseName("../publish/web.oba/"));
   p(fp.baseName("../publish/web.oba/", ".oba"));
@@ -34,6 +34,6 @@ main() {
   //p(fp.expandPath("c:/t_/.../abc"));
   //p(fp.expandPath("../ab/cd/../ef/.."));
   p(fp.ensureLinuxPath("..\\publish\\web/"));
-  p(fp.ensureOsPath("..\\publish\\web/"));
+  p(fp.isRootPath("c:\tres"));
 }
 
